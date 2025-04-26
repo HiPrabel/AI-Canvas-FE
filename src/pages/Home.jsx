@@ -8,6 +8,7 @@ import { Moon, Sun, Eraser, Pencil, LayoutGrid, Link, Github, Mail, Linkedin } f
 
 export default function Home() {
     const canvasRef = useRef(null);
+    const solveButtonRef = useRef(null);
     const [isDrawing, setIsDrawing] = useState(false);
     const [color, setColor] = useState('rgb(255, 0, 0)');
     const [reset, setReset] = useState(false);
@@ -222,6 +223,10 @@ export default function Home() {
     const runRoute = async () => {
         const canvas = canvasRef.current;
     
+        if (solveButtonRef.current) {
+            solveButtonRef.current.disabled = true;
+        }
+
         if (canvas) {
             try {
                 const response = await fetch(`${import.meta.env.VITE_API_URL}/calculate`, {
@@ -282,6 +287,10 @@ export default function Home() {
             } catch (error) {
                 console.error("Error processing request:", error);
                 setShowError(true);
+            } finally {
+                if (solveButtonRef.current) {
+                    solveButtonRef.current.disabled = false;
+                }
             }
         }
     };
@@ -447,8 +456,13 @@ export default function Home() {
                     )
                 )}
 
-                <Button onClick={runRoute} className="bg-green-600 hover:bg-green-700 text-white hover:scale-95 transition-transform duration-200 text-xs md:text-sm py-1 px-2 md:py-2 md:px-5">
-                    Run
+                <Button 
+                onClick={runRoute} 
+                className="bg-green-600 hover:bg-green-700 text-white hover:scale-95 transition-transform duration-200 text-xs md:text-sm py-1 px-2 md:py-2 md:px-5"
+                disabled={false}
+                ref={solveButtonRef}
+                >
+                    Solve
                 </Button>
 
                 {isMobile && (
