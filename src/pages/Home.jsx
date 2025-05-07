@@ -32,7 +32,7 @@ export default function Home() {
     });
 
     const renderLatexToCanvas = (expression, answer) => {
-        const latex = `\\(\\LARGE{${expression} = ${answer}}\\)`;
+        const latex = `\\(\\LARGE{\\text{${expression}} = \\text{${answer}}}\\)`;
         setLatexExpression([...latexExpression, latex]);
 
         // Clear the main canvas
@@ -121,7 +121,12 @@ export default function Home() {
 
         script.onload = () => {
             window.MathJax.Hub.Config({
-                tex2jax: {inlineMath: [['$', '$'], ['\\(', '\\)']]},
+                tex2jax: {
+                    inlineMath: [['$', '$'], ['\\(', '\\)']],
+                },
+                menuSettings: {
+                    context: "none",
+                }
             });
         };
 
